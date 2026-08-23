@@ -102,9 +102,14 @@ Pregunta del usuario:
 """
 
         # Generar respuesta con Gemini
+        print("ANTES DE GEMINI")
+        
         respuesta = modelo.generate_content(prompt)
+        
+        print("RESPUESTA GEMINI:",respuesta)
+        
         texto_respuesta = respuesta.text if respuesta and hasattr(respuesta, "text") else "No fue posible generar una respuesta."
-
+        and haattr(respuesta,"text") else "No fue posible generar una respuesta"
         return jsonify({
             "respuesta": texto_respuesta,
             "fuentes": fuentes
