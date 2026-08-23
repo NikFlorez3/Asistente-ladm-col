@@ -101,9 +101,8 @@ Pregunta del usuario:
 """
         
         # Generar respuesta con Gemini
-        respuesta = cliente_gemini.modelS.generate_content(
-        model=MODELO_NOMBRE,
-        contents=prompt
+        respuesta = modelo.generate_content(
+            prompt
         )
 
         texto_respuesta = respuesta.text if respuesta.text else "No fue posible generar una respuesta."
