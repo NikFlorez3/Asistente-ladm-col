@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 import google.generativeai as genai
 import chromadb
+import traceback
 
 # Cargar variables de entorno desde .env si existe
 load_dotenv()
@@ -113,7 +114,7 @@ Pregunta del usuario:
         })
         
     except Exception as e:
-        print(f"Error en /preguntar: {e}")
+        traceback.print_exc()
         return jsonify({
             "error": "Ocurrió un error al procesar tu consulta.",
             "detalle": str(e)
