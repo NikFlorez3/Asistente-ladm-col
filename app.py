@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
-import google.generativeai as genai
+fom google import genai
 import chromadb
 
 # Cargar variables de entorno desde .env si existe
@@ -11,14 +11,12 @@ app = Flask(__name__)
 
 # Configuración de API Key de Gemini
 API_KEY = os.getenv("GEMINI_API_KEY")
-genai.configure(api_key=API_KEY)
+
+cliente_gemini= genai.configure(api_key=API_KEY)
 
 # Modelo Gemini (utiliza gemini-3.6-flash / gemini-2.0-flash / gemini-1.5-flash con fallback)
 MODELO_NOMBRE = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
-try:
-    modelo = genai.GenerativeModel(MODELO_NOMBRE)
-except Exception:
-    modelo = genai.GenerativeModel("gemini-1.5-flash")
+
 
 # Conectar base vectorial LADM-COL
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -100,18 +98,18 @@ Contexto documental oficial LADM-COL:
 Pregunta del usuario:
 {pregunta}
 """
-
+        
         # Generar respuesta con Gemini
-        print("ANTES DE GEMINI")
-        
-        respuesta = modelo.generate_content(prompt)
-        
-        print("RESPUESTA GEMINI:",respuesta)
-        
-        texto_respuesta = respuesta.text if respuesta and hasattr(respuesta,"text") else "No fue posible generar una respuesta"
+        respuesta = cliente_gemini.models.generate_content(
+        model=MODELO_NOMBRE,
+        contents=prompt
+        )
+
+        texto_respuesta = respuesta.text if respuesta and hasattr(respuesta, "text") else "No fue posible generar una respuesta."
+
         return jsonify({
-            "respuesta": texto_respuesta,
-            "fuentes": fuentes
+        "respuesta": texto_respuesta,
+        "fuentes": fuentes
         })
         
     except Exception as e:
