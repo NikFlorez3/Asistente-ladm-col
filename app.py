@@ -108,13 +108,12 @@ Pregunta del usuario:
         
         print("RESPUESTA GEMINI:",respuesta)
         
-        texto_respuesta = respuesta.text if respuesta and hasattr(respuesta, "text") else "No fue posible generar una respuesta."
-        and haattr(respuesta,"text") else "No fue posible generar una respuesta"
+        texto_respuesta = respuesta.text if respuesta and hasattr(respuesta,"text") else "No fue posible generar una respuesta"
         return jsonify({
             "respuesta": texto_respuesta,
             "fuentes": fuentes
         })
-
+        
     except Exception as e:
         print(f"Error en /preguntar: {e}")
         return jsonify({
