@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
-import google.generativeai
+import google.generativeai as genai
 import chromadb
 
 # Cargar variables de entorno desde .env si existe
@@ -100,7 +100,7 @@ Pregunta del usuario:
 """
         
         # Generar respuesta con Gemini
-        respuesta = modelo.generate_content(
+        respuesta = cliente_gemini.modelS.generate_content(
         model=MODELO_NOMBRE,
         contents=prompt
         )
