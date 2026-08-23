@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente Experto LADM-COL | Catastro Multipropósito</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Marked.js para renderizado de Markdown y tablas -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Highlight.js para código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- Estilos de la aplicación -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Barra Lateral / Panel de Información -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <div class="brand-icon">
+                        <i data-lucide="layers"></i>
+                    </div>
+                    <div class="brand-text">
+                        <h2>LADM-COL</h2>
+                        <span>Asistente Técnico IA</span>
+                    </div>
+                </div>
+                <button class="mobile-toggle" id="close-sidebar-btn" aria-label="Cerrar menú">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="sidebar-section">
+                    <button class="new-chat-btn" id="new-chat-btn">
+                        <i data-lucide="plus-circle"></i>
+                        <span>Nueva Consulta</span>
+                    </button>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="section-title">
+                        <i data-lucide="sparkles"></i>
+                        <span>Consultas Frecuentes</span>
+                    </div>
+                    <div class="quick-prompts">
+                        <button class="prompt-chip" data-question="¿Qué es la clase LA_BAUnit y cuáles son sus atributos principales en LADM-COL?">
+                            <i data-lucide="help-circle"></i>
+                            <span>Estructura de LA_BAUnit</span>
+                        </button>
+                        <button class="prompt-chip" data-question="¿Cómo está compuesto y estructurado el Código Predial Nacional (CPN)?">
+                            <i data-lucide="binary"></i>
+                            <span>Código Predial Nacional (CPN)</span>
+                        </button>
+                        <button class="prompt-chip" data-question="Explica las diferencias entre el Modelo Núcleo y el Modelo Extendido de Catastro-Registro (Resolución Conjunta 1456 / 09844).">
+                            <i data-lucide="git-branch"></i>
+                            <span>Catastro - Registro (Res. 1456)</span>
+                        </button>
+                        <button class="prompt-chip" data-question="¿Cuáles son las clases y relaciones del paquete de Interesados (Party) en LADM-COL?">
+                            <i data-lucide="users"></i>
+                            <span>Paquete Interesados (Party)</span>
+                        </button>
+                        <button class="prompt-chip" data-question="¿Cuáles son las principales novedades de la Resolución 662 de 2024 respecto al modelo extendido de catastro?">
+                            <i data-lucide="file-text"></i>
+                            <span>Resolución 662 de 2024</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="section-title">
+                        <i data-lucide="database"></i>
+                        <span>Base de Conocimiento</span>
+                    </div>
+                    <div class="kb-badge-card">
+                        <div class="kb-status">
+                            <span class="status-dot online"></span>
+                            <span class="kb-title">23 Documentos Oficiales</span>
+                        </div>
+                        <p class="kb-desc">Incluye resoluciones IGAC, SNR, ICDE, diccionarios SINIC, RIC y CONPES 3958.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="version-tag">
+                    <span>LADM-COL v4.1 • RAG Activo</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Área Principal de Chat -->
+        <main class="chat-main">
+            <!-- Header Superior -->
+            <header class="chat-header">
+                <button class="mobile-toggle" id="open-sidebar-btn" aria-label="Abrir menú">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div class="header-info">
+                    <div class="title-with-badge">
+                        <h1>🇨🇴 Asistente Experto LADM-COL</h1>
+                        <span class="badge-tag">Catastro Multipropósito</span>
+                    </div>
+                    <p class="header-subtitle">Consultas técnicas sobre modelos conceptuales, clases UML, diccionarios de datos y normativa</p>
+                </div>
+                <div class="header-actions">
+                    <button class="action-btn" id="clear-chat-top-btn" title="Limpiar pantalla">
+                        <i data-lucide="trash-2"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Contenedor de Mensajes -->
+            <div class="messages-container" id="messages-container">
+                <!-- Mensaje de Bienvenida Inicial -->
+                <div class="welcome-card" id="welcome-card">
+                    <div class="welcome-icon">
+                        <i data-lucide="compass"></i>
+                    </div>
+                    <h2>¡Bienvenido al Asistente Técnico LADM-COL!</h2>
+                    <p>Estoy entrenado y conectado a la base documental oficial del modelo <strong>LADM-COL</strong> para la gestión catastral y administración del territorio en Colombia.</p>
+                    
+                    <div class="welcome-features">
+                        <div class="feature-item">
+                            <i data-lucide="check-circle-2"></i>
+                            <span>Diccionarios de datos y tipos de dominios</span>
+                        </div>
+                        <div class="feature-item">
+                            <i data-lucide="check-circle-2"></i>
+                            <span>Estructura UML, clases, atributos y cardinalidades</span>
+                        </div>
+                        <div class="feature-item">
+                            <i data-lucide="check-circle-2"></i>
+                            <span>Resoluciones IGAC / SNR y normatividad vigente</span>
+                        </div>
+                    </div>
+
+                    <div class="starter-suggestions">
+                        <span class="starter-title">O selecciona una consulta de inicio:</span>
+                        <div class="starter-grid">
+                            <button class="starter-btn" data-question="¿Qué es el modelo LADM-COL y cuál es su marco conceptual en Colombia?">
+                                🗺️ ¿Qué es el modelo LADM-COL?
+                            </button>
+                            <button class="starter-btn" data-question="Explica las clases del paquete de Predios y Unidades Espaciales en el modelo catastral.">
+                                📐 Clases de Unidades Espaciales
+                            </button>
+                            <button class="starter-btn" data-question="¿Cómo se modelan las Restricciones, Responsabilidades y Derechos (RRR)?">
+                                ⚖️ Modelo de Derechos, Restricciones y Responsabilidades (RRR)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="messages-list" id="messages-list">
+                    <!-- Los mensajes dinámicos se insertarán aquí -->
+                </div>
+            </div>
+
+            <!-- Entrada de Texto / Input Box -->
+            <div class="input-container">
+                <form id="chat-form" class="chat-form" onsubmit="return false;">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="pregunta-input" 
+                            rows="1" 
+                            placeholder="Escribe tu consulta sobre LADM-COL (ej. clases, atributos, CPN, resoluciones)..." 
+                            autocomplete="off"
+                            required
+                        ></textarea>
+                        <button type="submit" id="send-btn" class="send-btn" aria-label="Enviar mensaje">
+                            <i data-lucide="send"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="input-footer">
+                    <span>Respuestas fundamentadas en la base documental técnica y normativa LADM-COL</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast de Notificaciones -->
+    <div id="toast" class="toast">
+        <i data-lucide="check"></i>
+        <span id="toast-message">Copiado al portapapeles</span>
+    </div>
+
+    <!-- Script de la aplicación -->
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script>
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
+    </script>
+</body>
+</html>

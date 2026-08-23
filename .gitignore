@@ -1,0 +1,27 @@
+# Entornos virtuales de Python
+venv/
+env/
+ENV/
+.venv/
+
+# Variables de entorno secretas
+.env
+
+# Caché de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# IDEs y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Base temporal o checkpoints
+.ipynb_checkpoints/
+
+# Archivos locales del proyecto
+base_ladm/
+documentos_ladm_col/
