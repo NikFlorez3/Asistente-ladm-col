@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
-from google import genai
+import google.generativeai
 import chromadb
 
 # Cargar variables de entorno desde .env si existe
@@ -12,12 +12,11 @@ app = Flask(__name__)
 # Configuración de API Key de Gemini
 API_KEY = os.getenv("GEMINI_API_KEY")
 
-cliente_gemini= genai.Client(api_key=API_KEY)
 
 # Modelo Gemini (utiliza gemini-3.6-flash / gemini-2.0-flash / gemini-1.5-flash con fallback)
 MODELO_NOMBRE = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
 
-modelo = cliente_gemini
+modelo = genai.GenerativeModel(MODELO_NOMBRE)
 
 # Conectar base vectorial LADM-COL
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -101,7 +100,7 @@ Pregunta del usuario:
 """
         
         # Generar respuesta con Gemini
-        respuesta = cliente_gemini.models.generate_content(
+        respuesta = modelo.generate_content(prompt)
         model=MODELO_NOMBRE,
         contents=prompt
         )
