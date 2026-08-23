@@ -100,7 +100,7 @@ Pregunta del usuario:
 """
         
         # Generar respuesta con Gemini
-        respuesta = modelo.generate_content(prompt)
+        respuesta = modelo.generate_content(
         model=MODELO_NOMBRE,
         contents=prompt
         )
