@@ -54,7 +54,7 @@ def preguntar():
         # Buscar información relevante en ChromaDB conservando la lógica RAG
         resultados = coleccion.query(
             query_texts=[pregunta],
-            n_results=3  # Recupera los fragmentos más relevantes de la base documental
+            n_results=2  # Recupera los fragmentos más relevantes de la base documental
         )
 
         documentos_recuperados = []
@@ -87,11 +87,12 @@ Reglas de respuesta:
 2. Si la consulta NO está relacionada con LADM-COL ni catastro, responde amablemente indicando:
    "Soy un asistente especializado exclusivamente en el modelo LADM-COL. Por favor formula una consulta técnica sobre esto."
 3. Basa tus respuestas en el contexto documental proporcionado. No inventes información.
-4. Utiliza formato Markdown profesional:
-   - Usa **negritas** para resaltar nombres de clases, atributos y términos clave.
-   - Utiliza tablas Markdown cuando describas atributos, dominios o estructuras de datos para facilitar la lectura.
-   - Emplea listas con viñetas o numeradas para pasos o enumeraciones.
-   - Para conceptos, proporciona primero una definición sintética y luego el detalle técnico/estructural.
+4. Responde de manera clara, directa y concisa.
+5. Prioriza la infromación más relevante para la consulta.
+6. Evista explicaciones innecsesarias extensas.
+7. Amplia información únicamente cuando el usuario lo solicite.
+8. Para conceptos, entrega primero una definición corta. Incluye detalles técnicos solo cuando sea necesario o solicitados.y después los detalles técnicos necesarios.
+
 
 Contexto documental oficial LADM-COL:
 {contexto}
